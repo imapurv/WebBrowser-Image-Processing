@@ -29,7 +29,7 @@
 
 			<div id="maincontent">
 
-
+			<div id="output"></div>
 
 			</div>
 			<ul id="gn-menu" class="gn-menu-main">
@@ -66,10 +66,11 @@
 					</nav>
 				</li>
 				<li><a >Image Processor</a></li>
-				<li> <a class="gn-icon" >Upload</a></li>
+				<li> <a class="gn-icon" ><label for="file">Upload</label></a></li>
+
 
 			</ul>
-
+			<input type="file" name="file" id="file" class="inputfile" />
 		</div><!-- /container -->
 		<script src="js/classie.js"></script>
 		<script src="js/gnmenu.js"></script>
@@ -195,7 +196,24 @@
 
 
 
+			var inputs = document.querySelectorAll( '.inputfile' );
+			Array.prototype.forEach.call( inputs, function( input )
+			{
+				var label	 = input.nextElementSibling,
+						labelVal = label.innerHTML;
 
+				input.addEventListener( 'change', function( e )
+				{
+					var fileName = '';
+					if( this.files && this.files.length > 1 )
+						fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+					else
+						fileName = e.target.value.split( '\\' ).pop();
+					alert(fileName);
+					//document.getElementById('output').innerHTML =fileName;
+
+				});
+			});
 
 
 			new gnMenu( document.getElementById( 'gn-menu' ) );
