@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>Image Processor</title>
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<script src="js/modernizr.custom.js"></script>
+		<script src="process.js" ></script>
+	</head>
+	<body>
+		<div class="container">
+			<div id="maincontent">
+				<canvas id="canvas" class="canvas_container"></canvas>
+
+			</div>
+			<ul id="gn-menu" class="gn-menu-main">
+				<li class="gn-trigger">
+					<a class="gn-icon gn-icon-menu"><span>Menu</span></a>
+					<nav class="gn-menu-wrapper">
+						<div class="gn-scroller">
+							<ul class="gn-menu">
+								<!--
+								<li class="gn-search-item">
+									<input placeholder="Search" type="search" class="gn-search">
+									<a class="gn-icon gn-icon-search"><span>Search</span></a>
+								</li>
+								<li>
+									<a class="gn-icon gn-icon-download">Downloads</a>
+										<li><a class="gn-icon gn-icon-photoshop">Photoshop files</a></li>
+									</ul>
+								</li>
+								-->
+								<li><a class="gn-icon gn-icon-cog">Edit</a></li>
+								<li><a class="gn-icon gn-icon-help">Help</a></li>
+								<!--
+								<li>
+									<a class="gn-icon gn-icon-archive">Archives</a>
+									<ul class="gn-submenu">
+										<li><a class="gn-icon gn-icon-article">Articles</a></li>
+										<li><a class="gn-icon gn-icon-pictures">Images</a></li>
+										<li><a class="gn-icon gn-icon-videos">Videos</a></li>
+									</ul>
+								</li>
+								-->
+							</ul>
+						</div><!-- /gn-scroller -->
+					</nav>
+				</li>
+				<li><a >Image Processor</a></li>
+				<li> <a class="gn-icon" >Upload</a></li>
+
+			</ul>
+
+		</div><!-- /container -->
+		<script src="js/classie.js"></script>
+		<script src="js/gnmenu.js"></script>
+
+		<script>
+			var img = new Image();
+			img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+			var canvas = document.getElementById('canvas');
+			var ctx = canvas.getContext('2d');
+			img.onload = function() {
+				ctx.drawImage(img, 0, 0);
+				img.style.display = 'none';
+			};
+			var color = document.getElementById('color');
+			function pick(event) {
+				var x = event.layerX;
+				var y = event.layerY;
+				var pixel = ctx.getImageData(x, y, 1, 1);
+				var data = pixel.data;
+				var rgba = 'rgba(' + data[0] + ',' + data[1] +
+						',' + data[2] + ',' + data[3] + ')';
+				color.style.background =  rgba;
+				color.textContent = rgba;
+			}
+			canvas.addEventListener('mousemove', pick);
+			new gnMenu( document.getElementById( 'gn-menu' ) );
+		</script>
+	</body>
+</html>

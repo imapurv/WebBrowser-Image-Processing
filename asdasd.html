@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #bt {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        h1.normal {
+            font-style: bold;
+            border-bottom:1px solid #4CAF50;
+
+
+            font-family:"Lucida Console", Monaco, monospace;
+
+            color:#4CAF50;
+        }
+
+    </style>
+</head>
+<body>
+<div align="center">
+
+    <h1 class="normal">Hi, Apurv Your Sticky Notes </h1>
+    <button id="bt" onclick="myFunction()" >Add Note</button>
+    <div id="addinput" >
+
+
+    </div>
+
+
+    <div   style="margin-left:200px;margin-right:200px;border: 2px solid #73AD21; border-radius: 25px;margin-top:20px;
+    padding: 20px; " >
+        It seems in the 2 years since this was asked, the other browsers have caught up (at least on Windows... not sure about others). You can set a "title" attribute on the option tag:
+        <br><br>
+        <form>
+            Share Notes :
+            <select name="shareto">
+
+                <option value="">Share to</option>
+
+                <option  value="volvo">Volvo</option>
+                <option  value="saab">Saab</option>
+                <option  value="opel">Opel</option>
+                <option  value="audi">Audi</option>
+            </select>
+            <input type="submit" name="but" value="SHARE">
+        </form>
+    </div>
+
+    <div   style="margin-left:200px;margin-right:200px;border: 2px solid #73AD21; border-radius: 25px;margin-top:20px;
+    padding: 20px; " >
+        It seems in the 2 years since this was asked, the other browsers have caught up (at least on Windows... not sure about others). You can set a "title" attribute on the option tag:
+        <br><br>
+        <form>
+            Share Notes :
+            <select>
+
+                <option value="">Share to</option>
+
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="opel">Opel</option>
+                <option value="audi">Audi</option>
+            </select>
+            <input type="submit" name="but" value="SHARE">
+        </form>
+    </div>
+
+</div>
+
+</body>
+<script>
+    function myFunction() {
+        document.getElementById('addinput').innerHTML += " <br> <br><form method=\"GET\"  >\n" +
+        "<textarea rows=\"4\" cols=\"50\" name=\"comment\" form=\"usrform\"></textarea>"+
+        "            <br>\n" +
+        "            <input type=\"submit\" name=\"but\" value=\"ADD\">\n" +
+        "        </form>";
+
+
+
+
+
+    }
+</script>
+
+
+
+</html>
+

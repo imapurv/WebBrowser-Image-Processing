@@ -12,12 +12,24 @@
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
 		<script src="js/modernizr.custom.js"></script>
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 		<script src="process.js" ></script>
+		<script src="invert.js" ></script>
 	</head>
 	<body>
-		<div class="container">
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<a onclick="invert()"href="#">Invert</a>
+		<a onclick="greyscale()"  href="#">Greyscale</a>
+		<a href="#">Clients</a>
+		<a href="#">Contact</a>
+	</div>
+		<div  class="container">
+
 			<div id="maincontent">
-				<canvas id="canvas" class="canvas_container"></canvas>
+
+
 
 			</div>
 			<ul id="gn-menu" class="gn-menu-main">
@@ -37,7 +49,7 @@
 									</ul>
 								</li>
 								-->
-								<li><a class="gn-icon gn-icon-cog">Edit</a></li>
+								<li><a onclick="abs()" class="gn-icon gn-icon-cog">Edit</a></li>
 								<li><a class="gn-icon gn-icon-help">Help</a></li>
 								<!--
 								<li>
@@ -63,26 +75,129 @@
 		<script src="js/gnmenu.js"></script>
 
 		<script>
-			var img = new Image();
-			img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
-			var canvas = document.getElementById('canvas');
-			var ctx = canvas.getContext('2d');
-			img.onload = function() {
+
+            function abs(){
+				document.getElementById("mySidenav").style.width = "250px";
+				document.getElementById("contain").style.marginLeft = "250px";
+			}
+			function closeNav() {
+				document.getElementById("mySidenav").style.width = "0";
+				document.getElementById("contain").style.marginLeft = "0";
+			}
+
+			var img = new Image;
+			img.onload = setup;  img.crossOrigin = "";
+			img.src = "http://i.imgur.com/OrYVGI8.jpg";
+
+			document.getElementById('maincontent').innerHTML += "<canvas style=\"margin-top: -140px;margin-left: -300px;\" id=\"c\" width=\""+"600"+"\" height=\""+"480"+"\" class=\"canvas_container\"></canvas> ";
+			var ctx = c.getContext("2d");
+
+			//var width = img.naturalWidth; // this will be 300
+			//var height = img.naturalHeight; // this will be 400
+
+			function setup() {
+				c.width = this.naturalWidth;  c.height = this.naturalHeight;
+				ctx.drawImage(this, 0, 0);    btn.disabled = false
+			}
+				//var img = new Image();
+			//img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+			function invert() {
+
+				var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+						idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+						dataSrc = idataSrc.data,                              // reference the data itself
+						dataTrg = idataTrg.data,
+						len = dataSrc.length, i = 0, luma;
+
+				// convert by iterating over each pixel each representing RGBA
+				for(; i < len; i += 4) {
+					// calculate luma, here using rec601
+					//luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+					dataTrg[i]     = 255 - dataSrc[i];     // red
+					dataTrg[i + 1] = 255 - dataSrc[i + 1]; // green
+					dataTrg[i + 2] = 255 - dataSrc[i + 2]; // blue
+					// update target's RGB using the same luma value for all channels
+					//dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+					dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+				}
+
+				// put back luma data so we can save it as image
+				ctx.putImageData(idataTrg, 0, 0);
+				demo.src = c.toDataURL();                                 // set demo result's src url
+
+				// restore backup data
+				ctx.putImageData(idataSrc, 0, 0);
+			}
+			function greyscale() {
+
+				var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+						idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+						dataSrc = idataSrc.data,                              // reference the data itself
+						dataTrg = idataTrg.data,
+						len = dataSrc.length, i = 0, luma;
+
+				// convert by iterating over each pixel each representing RGBA
+				for(; i < len; i += 4) {
+					// calculate luma, here using rec601
+					luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+
+					// update target's RGB using the same luma value for all channels
+					dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+					dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+				}
+
+				// put back luma data so we can save it as image
+				ctx.putImageData(idataTrg, 0, 0);
+				demo.src = c.toDataURL();                                 // set demo result's src url
+
+				// restore backup data
+				ctx.putImageData(idataSrc, 0, 0);
+			}
+
+				$( function() {
+					$( "#c" ).draggable();
+				} );
+
+				//var canvas = document.getElementById('canvas');
+				//var ctx = canvas.getContext('2d');
+				//img.onload = function() {
+				//	ctx.drawImage(img, 0, 0);
+				//	img.style.display = 'none';
+				//};
+			/*
+			function inverts() {
+				alert("asdfa");
+				var img = new Image();
+				img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+				var canvas = document.getElementById('canvas');
+				var ctx = canvas.getContext('2d');
 				ctx.drawImage(img, 0, 0);
 				img.style.display = 'none';
-			};
-			var color = document.getElementById('color');
-			function pick(event) {
-				var x = event.layerX;
-				var y = event.layerY;
-				var pixel = ctx.getImageData(x, y, 1, 1);
-				var data = pixel.data;
-				var rgba = 'rgba(' + data[0] + ',' + data[1] +
-						',' + data[2] + ',' + data[3] + ')';
-				color.style.background =  rgba;
-				color.textContent = rgba;
+
+				img.onload = function() {
+					draw(this);
+					var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+					var data = imageData.data;
+					alert("asdfa "+data.length);
+					for (var i = 0; i < data.length; i += 4) {
+						data[i] = 255 - data[i];     // red
+						data[i + 1] = 255 - data[i + 1]; // green
+						data[i + 2] = 255 - data[i + 2]; // blue
+					}
+					ctx.putImageData(imageData, 0, 0);
+				};
+
+
+
 			}
-			canvas.addEventListener('mousemove', pick);
+			*/
+
+
+
+
+
+
+
 			new gnMenu( document.getElementById( 'gn-menu' ) );
 		</script>
 	</body>
