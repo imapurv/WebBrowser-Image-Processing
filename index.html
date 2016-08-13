@@ -70,7 +70,7 @@
 
 
 			</ul>
-			<input type="file" name="file" id="file" class="inputfile" />
+			<input type="file" name="file" id="file" class="inputfile" data-multiple-caption="{count} files selected" multiple />
 		</div><!-- /container -->
 		<script src="js/classie.js"></script>
 		<script src="js/gnmenu.js"></script>
@@ -86,19 +86,23 @@
 				document.getElementById("contain").style.marginLeft = "0";
 			}
 
-			var img = new Image;
-			img.onload = setup;  img.crossOrigin = "";
-			img.src = "http://i.imgur.com/OrYVGI8.jpg";
 
 			document.getElementById('maincontent').innerHTML += "<canvas style=\"margin-top: -140px;margin-left: -300px;\" id=\"c\" width=\""+"600"+"\" height=\""+"480"+"\" class=\"canvas_container\"></canvas> ";
 			var ctx = c.getContext("2d");
 
+			newImage("http://i.imgur.com/OrYVGI8.jpg");
 			//var width = img.naturalWidth; // this will be 300
 			//var height = img.naturalHeight; // this will be 400
 
-			function setup() {
-				c.width = this.naturalWidth;  c.height = this.naturalHeight;
-				ctx.drawImage(this, 0, 0);    btn.disabled = false
+			function newImage(url) {
+				var img = new Image;
+				 img.crossOrigin = "";
+				img.src = url;
+				img.onload = function() {
+					c.width = img.naturalWidth;  c.height = img.naturalHeight;
+					ctx.drawImage(img, 0, 0);
+				};
+
 			}
 				//var img = new Image();
 			//img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
@@ -196,24 +200,15 @@
 
 
 
-			var inputs = document.querySelectorAll( '.inputfile' );
-			Array.prototype.forEach.call( inputs, function( input )
-			{
-				var label	 = input.nextElementSibling,
-						labelVal = label.innerHTML;
+			$("#file").change(function(e){
 
-				input.addEventListener( 'change', function( e )
-				{
-					var fileName = '';
-					if( this.files && this.files.length > 1 )
-						fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-					else
-						fileName = e.target.value.split( '\\' ).pop();
-					alert(fileName);
-					//document.getElementById('output').innerHTML =fileName;
 
-				});
+				var URL = window.webkitURL || window.URL;
+				var url = URL.createObjectURL(e.target.files[0]);
+				newImage(url);
+
 			});
+
 
 
 			new gnMenu( document.getElementById( 'gn-menu' ) );
