@@ -33,7 +33,7 @@
     right: 0;
     bottom: 0;
     overflow:hidden;
-    z-index: 2;
+    z-index: 6;
     margin: 30px;
     background-color: #31708f;
 }
@@ -53,7 +53,7 @@
     margin-left: -100px;
     overflow:hidden;
     background-color: #31708f;
-    z-index: -1;
+    z-index: -10;
 }
 [draggable=true] {
     cursor: move;
@@ -102,6 +102,21 @@
     font-size: 36px;
     margin-left: 50px;
 }
+.sidenav .undobtn {
+    position: absolute;
+    top: 10px;
+    font-size: 20px;
+    right: 180px;
+
+
+
+}
+.restorebtn {
+    position: absolute;
+    top: 8px;
+    font-size: 4px;
+    right: 100px;
+}
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
@@ -138,4 +153,41 @@
 .inputfile:focus + label {
     outline: 1px dotted #000;
     outline: -webkit-focus-ring-color auto 5px;
+}
+
+
+button.accordion {
+    background-color: #34495e;
+    color: #e8e6e4;
+    cursor: pointer;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+}
+
+button.accordion.active, button.accordion:hover {
+    background-color: #31708f;
+}
+button.accordion.active:after {
+    content: "\2796";
+}
+
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.6s ease-in-out;
+    opacity: 0;
+}
+
+div.panel.show {
+    opacity: 1;
+    max-height: 500px;
 }

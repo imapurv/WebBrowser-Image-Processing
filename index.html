@@ -14,24 +14,33 @@
 		<script src="js/modernizr.custom.js"></script>
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
-		<script src="process.js" ></script>
-		<script src="invert.js" ></script>
+		<script type="text/javascript" src="js/process.js" ></script>
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 	</head>
 	<body>
 	<div id="mySidenav" class="sidenav">
+		<a class="undobtn fa fa-undo" onclick="undo()" href="#"></a>
+		<a class="restorebtn fa fa-retweet" onclick="restore()" href="#"></a>
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
 		<a onclick="invert()"href="#">Invert</a>
 		<a onclick="greyscale()"  href="#">Greyscale</a>
-		<a href="#">Clients</a>
-		<a href="#">Contact</a>
+		<a onclick="brightness()"href="#">Brightness</a>
+		<button class="accordion">Section 2</button>
+		<div class="panel">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+		</div>
+		<a  onclick="threshold()"href="#">Threshold</a>
+
 	</div>
 		<div  class="container">
 
 			<div id="maincontent">
 
-			<div id="output"></div>
+				<!--<div id="output" height="600px" width="200px" style="background-color: #8f231e;z-index: 14">asdfasdf</div> -->
 
 			</div>
+
 			<ul id="gn-menu" class="gn-menu-main">
 				<li class="gn-trigger">
 					<a class="gn-icon gn-icon-menu"><span>Menu</span></a>
@@ -66,7 +75,7 @@
 					</nav>
 				</li>
 				<li><a >Image Processor</a></li>
-				<li> <a class="gn-icon" ><label for="file">Upload</label></a></li>
+				<li><a ><label for="file">Upload</label></a></li>
 
 
 			</ul>
@@ -76,129 +85,13 @@
 		<script src="js/gnmenu.js"></script>
 
 		<script>
-
-            function abs(){
-				document.getElementById("mySidenav").style.width = "250px";
-				document.getElementById("contain").style.marginLeft = "250px";
-			}
-			function closeNav() {
-				document.getElementById("mySidenav").style.width = "0";
-				document.getElementById("contain").style.marginLeft = "0";
-			}
-
-
-			document.getElementById('maincontent').innerHTML += "<canvas style=\"margin-top: -140px;margin-left: -300px;\" id=\"c\" width=\""+"600"+"\" height=\""+"480"+"\" class=\"canvas_container\"></canvas> ";
+			document.getElementById('maincontent').innerHTML += "<canvas style=\"margin-top: -140px;z-index: -10;margin-left: -300px;\" id=\"c\" width=\""+"600"+"\" height=\""+"480"+"\" class=\"canvas_container\"></canvas> ";
 			var ctx = c.getContext("2d");
 
+			var k=0;
+			var original;
+			var stack = [];
 			newImage("http://i.imgur.com/OrYVGI8.jpg");
-			//var width = img.naturalWidth; // this will be 300
-			//var height = img.naturalHeight; // this will be 400
-
-			function newImage(url) {
-				var img = new Image;
-				 img.crossOrigin = "";
-				img.src = url;
-				img.onload = function() {
-					c.width = img.naturalWidth;  c.height = img.naturalHeight;
-					ctx.drawImage(img, 0, 0);
-				};
-
-			}
-				//var img = new Image();
-			//img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
-			function invert() {
-
-				var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
-						idataTrg = ctx.createImageData(c.width, c.height),    // empty data
-						dataSrc = idataSrc.data,                              // reference the data itself
-						dataTrg = idataTrg.data,
-						len = dataSrc.length, i = 0, luma;
-
-				// convert by iterating over each pixel each representing RGBA
-				for(; i < len; i += 4) {
-					// calculate luma, here using rec601
-					//luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-					dataTrg[i]     = 255 - dataSrc[i];     // red
-					dataTrg[i + 1] = 255 - dataSrc[i + 1]; // green
-					dataTrg[i + 2] = 255 - dataSrc[i + 2]; // blue
-					// update target's RGB using the same luma value for all channels
-					//dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
-					dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
-				}
-
-				// put back luma data so we can save it as image
-				ctx.putImageData(idataTrg, 0, 0);
-				demo.src = c.toDataURL();                                 // set demo result's src url
-
-				// restore backup data
-				ctx.putImageData(idataSrc, 0, 0);
-			}
-			function greyscale() {
-
-				var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
-						idataTrg = ctx.createImageData(c.width, c.height),    // empty data
-						dataSrc = idataSrc.data,                              // reference the data itself
-						dataTrg = idataTrg.data,
-						len = dataSrc.length, i = 0, luma;
-
-				// convert by iterating over each pixel each representing RGBA
-				for(; i < len; i += 4) {
-					// calculate luma, here using rec601
-					luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-
-					// update target's RGB using the same luma value for all channels
-					dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
-					dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
-				}
-
-				// put back luma data so we can save it as image
-				ctx.putImageData(idataTrg, 0, 0);
-				demo.src = c.toDataURL();                                 // set demo result's src url
-
-				// restore backup data
-				ctx.putImageData(idataSrc, 0, 0);
-			}
-
-				$( function() {
-					$( "#c" ).draggable();
-				} );
-
-				//var canvas = document.getElementById('canvas');
-				//var ctx = canvas.getContext('2d');
-				//img.onload = function() {
-				//	ctx.drawImage(img, 0, 0);
-				//	img.style.display = 'none';
-				//};
-			/*
-			function inverts() {
-				alert("asdfa");
-				var img = new Image();
-				img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
-				var canvas = document.getElementById('canvas');
-				var ctx = canvas.getContext('2d');
-				ctx.drawImage(img, 0, 0);
-				img.style.display = 'none';
-
-				img.onload = function() {
-					draw(this);
-					var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-					var data = imageData.data;
-					alert("asdfa "+data.length);
-					for (var i = 0; i < data.length; i += 4) {
-						data[i] = 255 - data[i];     // red
-						data[i + 1] = 255 - data[i + 1]; // green
-						data[i + 2] = 255 - data[i + 2]; // blue
-					}
-					ctx.putImageData(imageData, 0, 0);
-				};
-
-
-
-			}
-			*/
-
-
-
 
 			$("#file").change(function(e){
 
@@ -209,7 +102,15 @@
 
 			});
 
+			var acc = document.getElementsByClassName("accordion");
+			var i;
 
+			for (i = 0; i < acc.length; i++) {
+				acc[i].onclick = function(){
+					this.classList.toggle("active");
+					this.nextElementSibling.classList.toggle("show");
+				}
+			}
 
 			new gnMenu( document.getElementById( 'gn-menu' ) );
 		</script>
