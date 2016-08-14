@@ -19,18 +19,22 @@
 	</head>
 	<body>
 	<div id="mySidenav" class="sidenav">
+
+
 		<a class="undobtn fa fa-undo" onclick="undo()" href="#"></a>
 		<a class="restorebtn fa fa-retweet" onclick="restore()" href="#"></a>
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-
-		<a onclick="invert()"href="#">Invert</a>
-		<a onclick="greyscale()"  href="#">Greyscale</a>
-		<a onclick="brightness()"href="#">Brightness</a>
-		<button class="accordion">Section 2</button>
+		<button onclick="invert()" class="sbtn">Invert</button>
+		<button onclick="greyscale()" class="sbtn">Greyscale</button>
+		<button class="accordion">Brightness</button>
 		<div class="panel">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+			<input type="range" id="myRange" class="center" value="0" min="0" max="100" onchange="updateTextInput(this.value);">
+			<input type="text" id="textInput" value="">
+
 		</div>
-		<a  onclick="threshold()"href="#">Threshold</a>
+		<button onclick="threshold()" class="sbtn">Threshold</button>
+		
 
 	</div>
 		<div  class="container">
@@ -101,7 +105,7 @@
 				newImage(url);
 
 			});
-
+			updateTextInput("0");
 			var acc = document.getElementsByClassName("accordion");
 			var i;
 

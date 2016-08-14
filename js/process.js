@@ -6,14 +6,19 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("contain").style.marginLeft = "0";
 }
-
+var old=0;
+function updateTextInput(val) {
+    document.getElementById('textInput').value=val+"%";
+    brightness(val-old);
+    old=val;
+}
 
 //var width = img.naturalWidth; // this will be 300
 //var height = img.naturalHeight; // this will be 400
 function undo() {
-    if(v-1>=0)
+    if(value-1>=0)
     ctx.putImageData(stack.pop(), 0, 0);
-    v--;
+    value--;
 }
 function restore() {
     ctx.putImageData(original, 0, 0);
@@ -77,8 +82,8 @@ function threshold(){
     stack.push(srcc);
     ctx.putImageData(srcc, 0, 0);
 }
-function brightness() {
-
+function brightness(val) {
+    var tval=parseInt(val);
     var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
@@ -89,9 +94,9 @@ function brightness() {
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-        dataTrg[i]     +=dataSrc[i]+50 ;     // red
-        dataTrg[i + 1] =50 +dataSrc[i + 1]; // green
-        dataTrg[i + 2] = +50+ dataSrc[i + 2]; // blue
+        dataTrg[i]     +=dataSrc[i]+tval ;     // red
+        dataTrg[i + 1] =tval +dataSrc[i + 1]; // green
+        dataTrg[i + 2] = tval+ dataSrc[i + 2]; // blue
         // update target's RGB using the same luma value for all channels
         //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
         dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
