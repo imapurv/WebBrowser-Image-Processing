@@ -8,11 +8,38 @@ function closeNav() {
 }
 var old=0;
 function updateTextInput(val) {
-    document.getElementById('textInput').value=val+"%";
+  //  document.getElementById('textInput').value=val+"%";
     brightness(val-old);
     old=val;
 }
+function brightness(val) {
+    var tval=parseInt(val);
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
 
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+        dataTrg[i]     +=dataSrc[i]+tval ;     // red
+        dataTrg[i + 1] =tval +dataSrc[i + 1]; // green
+        dataTrg[i + 2] = tval+ dataSrc[i + 2]; // blue
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+    }
+
+    // put back luma data so we can save it as image
+
+    ctx.putImageData(idataTrg, 0, 0);
+    //demo.src = c.toDataURL();                                 // set demo result's src url
+
+    // restore backup data
+    //ctx.putImageData(idataSrc, 0, 0);
+}
 //var width = img.naturalWidth; // this will be 300
 //var height = img.naturalHeight; // this will be 400
 function undo() {
@@ -153,9 +180,6 @@ function greyscale() {
     value++;
 }
 
-$( function() {
-    $( "#c" ).draggable();
-} );
 
 function sharpen(){
     var pixels= ctx.getImageData(0, 0, c.width, c.height);

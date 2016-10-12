@@ -23,29 +23,14 @@ function undo() {
 function restore() {
     ctx.putImageData(original, 0, 0);
 }
-function runner(ctx) {
-    stack.push(ctx.getImageData(0, 0, c.width, c.height));
-    value++;
-    original=ctx.getImageData(0, 0, c.width, c.height);
-}
 var value=0;
 function newImage(url) {
     var img = new Image;
     img.crossOrigin = "";
     img.src = url;
     img.onload = function() {
-        c.width = img.naturalWidth;  c.height =  img.naturalHeight;
-        //ctx.canvas.width  = window.innerWidth;
-       // ctx.canvas.height = window.innerHeight;
-        if (c.width  > window.innerWidth)
-        {
-            c.width  = window.innerWidth;
-        }
+        c.width = img.naturalWidth;  c.height = img.naturalHeight;
 
-        if (c.height > window.innerHeight)
-        {
-            c.height = window.innerHeight;
-        }
         ctx.drawImage(img, 0, 0);
         stack.push(ctx.getImageData(0, 0, c.width, c.height));
         value++;
@@ -162,7 +147,7 @@ function sharpen(){
     //var pixels =srcc.data;
 
 
-        var weights=[ 0, -1,  0, -1,  5, -1, 0, -1, 0];
+        var weights=[ 3, -4,  5, -6,  5, -2, 4, -1, 5];
         var opaque=0;
     var side = Math.round(Math.sqrt(weights.length));
     var halfSide = Math.floor(side/2);

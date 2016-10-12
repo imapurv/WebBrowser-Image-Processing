@@ -16,6 +16,11 @@
 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/process.js" ></script>
 		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
+		<script src="https://cdn.rawgit.com/seikichi/tiff.js/master/tiff.min.js"></script>
+
+		<script src="https://cdn.rawgit.com/rfvallina/Misc/master/pdf.js"></script>
+
 	</head>
 	<body>
 	<div id="mySidenav" class="sidenav">
@@ -34,7 +39,10 @@
 
 		</div>
 		<button onclick="threshold()" class="sbtn">Threshold</button>
-		
+		<button onclick="sharpen()" class="sbtn">Sharpen</button>
+		<a href="histogram/index.html" class="sbtn">Histogram</a>
+
+
 
 	</div>
 		<div  class="container">
@@ -89,7 +97,7 @@
 		<script src="js/gnmenu.js"></script>
 
 		<script>
-			document.getElementById('maincontent').innerHTML += "<canvas style=\"margin-top: -140px;z-index: -10;margin-left: -300px;\" id=\"c\" width=\""+"600"+"\" height=\""+"480"+"\" class=\"canvas_container\"></canvas> ";
+			document.getElementById('maincontent').innerHTML += "<canvas style=\"z-index: -10;\" id=\"c\" ></canvas> ";
 			var ctx = c.getContext("2d");
 
 			var k=0;
@@ -97,13 +105,75 @@
 			var stack = [];
 			newImage("http://i.imgur.com/OrYVGI8.jpg");
 
-			$("#file").change(function(e){
 
+			$("#file").change(function(evt){
+				var parentEl = $("#maincontent");
 
-				var URL = window.webkitURL || window.URL;
-				var url = URL.createObjectURL(e.target.files[0]);
-				newImage(url);
+				console.debug("Event image...");
+			    var tgt = evt.target || window.event.srcElement,
+					files = tgt.files;
+				var extensions = files[0].name.split('.').pop().toLowerCase();
+				console.debug(extensions);
+				if (extensions != "tiff" && extensions != "tif"){
+					var URL = window.webkitURL || window.URL;
+					var url = URL.createObjectURL(evt.target.files[0]);
+					newImage(url);
+				}
+			    else {// FileReader support
+					var fileTypes = ['jpg', 'jpeg', 'png', 'tiff', 'tif', 'pdf']; //acceptable file types
+					parentEl.find("canvas").remove();
+					if (FileReader && files && files.length) {
+						var fr = new FileReader();
+						var extension = files[0].name.split('.').pop().toLowerCase();
+						var tif = false;
+						var pdf = false;
+						if (extension == "tiff" || extension == "tif")
+							tif = true;
+						else if (extension == "pdf")
+							pdf = true;
+						fr.onload = function(e) {
+							success = fileTypes.indexOf(extension) > -1;
+							if (success) {
+								if (tif) {
+									//Using tiff.min.js library - https://github.com/seikichi/tiff.js/tree/master
+									console.debug("Parsing TIFF image...");
+									//initialize with 100MB for large files
+									Tiff.initialize({
+										TOTAL_MEMORY: 100000000
+									});
+									var tiff = new Tiff({
+										buffer: e.target.result
+									});
+									var tiffCanvas = tiff.toCanvas();
+									$(tiffCanvas).css({
 
+									"z-index":"-10",
+										"max-width" :"100%",
+										"max-height" :"100%"
+									}).addClass("ui-draggable ui-draggable-handle");
+									tiffCanvas.id="c";
+									console.debug("converted");
+									$(parentEl).append(tiffCanvas);
+									ctx=tiffCanvas.getContext("2d");
+									runner(ctx);
+								} else if (pdf) {
+
+								} else {
+									console.debug("render immmm");
+									$(parentEl).append('<img src="' + fr.result + '" class="preview"/>');
+								}
+							}
+
+						}
+
+						fr.onloadend = function(e) {
+							console.debug("Load End");
+						}
+						if (tif)
+							fr.readAsArrayBuffer(files[0]);
+
+					}
+			}
 			});
 			updateTextInput("0");
 			var acc = document.getElementsByClassName("accordion");

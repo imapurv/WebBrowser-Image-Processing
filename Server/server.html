@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Side</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css"> </head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-default ">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#">Server Side</a> </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <form class="navbar-form navbar-right">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search"> </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="row">
+            <div class="col-sm-9">
+                <main>
+                    <div class="col-lg-12">
+                        <h4 class="page-header">Root Gallery</h4></div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/Capture.JPG" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/7821509496_51b6f6314a.jpg" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/Capture3.JPG" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/demo_small.png" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/one.png" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/Untitled-1.png" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/demo_small.png" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/demo_small.png" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/demo_small.png" alt="..."> </a>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="#" class="thumbnail"> <img onclick="getImgSrc(this)" class="img-responsive" src="./img/one.png" alt="..."> </a>
+                    </div>
+                </main>
+            </div>
+            <div id="side" class="col-sm-3">
+                <aside>
+                    <br>
+                    <h5 id="olalal" class="text-center"><u>Image Information</u></h5>
+                    <ul id="infolist" class="list-group"> </ul>
+                    <button id="btdown" type="button" class="btn btn-primary">Process</button>
+                </aside>
+            </div>
+        </div>
+        <footer class="navbar navbar-fixed-bottom text-center"> &copy;2016 cgossip.in </footer>
+    </div>
+    <!--
+    
+    
+   
+    <h1>asdasda</h1>-->
+    <style>
+        .thumbnail {
+            width: 171px;
+            height: 180px;
+            display: inline;
+        }
+        
+        main a {
+            float: left;
+            padding: 30px;
+        }
+        
+        #btdown {
+            position: absolute;
+            bottom: 0;
+            margin: 0 0 20px 110px;
+        }
+        
+        aside {
+            background-color: #efefef;
+            border-radius: 10px;
+            margin-right: 10px;
+            margin-left: 0px;
+            height: 400px;
+        }
+        
+        .navbar-fixed-bottom {
+            background-color: #141413;
+            border-color: #4F372D;
+            color: #a5a5a5;
+        }
+        
+        .navbar-default {
+            background-color: #525252;
+            border-color: #4F372D;
+        }
+        
+        #side {
+            margin-left: 0px;
+        }
+        
+        .nav .navbar-nav {
+            font-size: 12px;
+        }
+        
+        .navbar-default .navbar-brand {
+            color: #e0e0e0;
+        }
+        
+        .navbar {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border: 0;
+            border-radius: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            letter-spacing: 5px;
+        }
+        
+        .navbar-nav li a {
+            color: #1ca949 !important;
+        }
+        
+        .navbar-nav li a:hover {
+            color: #000000 !important;
+        }
+        
+        a.navbar-brand {
+            padding: 10px;
+            margin-left: 30px;
+        }
+    </style>
+</body>
+<script>
+    function getImgSrc(param) {
+        var imgSrc = $(param).attr("src");
+        $("#infolist").empty();
+        $("#infolist").append("<li class=\"list-group-item\">" + "Image Source :  " + imgSrc + "</li>");
+        // $('#infolist ul').append($('<li>').append("ghjghj"));
+    }
+</script>
+
+</html>
