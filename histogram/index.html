@@ -101,7 +101,7 @@
                                             <div class="col-sm-6 text-left" ><kbd>0</kbd> </div>
                                             <div class="col-sm-6 text-right"> <kbd>255</kbd>   </div>
                                         </div>
-                                        <input type="range" id="myRangeend" class="center" value="255" min="0" max="255" onchange="updateTextInput(this.value);">
+                                        <input type="range" id="myRangeend" class="center" value="255" min="0" max="255" onchange="updateTextInputd(this.value);">
                                         <div class="row">
                                             <div class="col-sm-6 text-left" ><kbd>0</kbd> </div>
                                             <div class="col-sm-6 text-right"> <kbd>255</kbd>   </div>
@@ -156,7 +156,12 @@
 
                                         <option value="gradient">Gradients</option>
                                     </select></label></p>
+
                                     </form>
+                                    <a onclick="linear_stretch()" class="btn btn-default">Linear</a>
+                                    <hr>
+                                    <a onclick=" histogram_equilization()" class="btn btn-default">Histogram Equilization</a>
+
                                 </div>
                             </div>
                         </div>
@@ -241,8 +246,8 @@
                 updateHist("rgb");
 
             }
-            else {// FileReader support
-                var fileTypes = ['jpg', 'jpeg', 'png', 'tiff', 'tif', 'pdf']; //acceptable file types
+            else {
+                var fileTypes = ['jpg', 'jpeg', 'png', 'tiff', 'tif', 'pdf'];
                 parentEl.find("canvas").remove();
                 if (FileReader && files && files.length) {
                     var fr = new FileReader();
@@ -379,11 +384,11 @@
 
             //updateHist();
         };
-
+        var chans = [[]];
         var calcHist = function (type) {
             var mean; var redavg=0,blueavg=0,greenavg=0; var tt=0;
-            var chans = [[]],
-                maxCount = 0, val, subtypes = [type];
+            chans = [[]];
+                var maxCount = 0, val, subtypes = [type];
 
             if (type === 'rgb') {
                 chans = [[], [], []];
@@ -453,6 +458,25 @@
             tt=redavg+blueavg+greenavg;
             var pix=imgData.length/4;
             tt=tt/pix;
+            i=0; var vari=0;
+            for (var i = 0, n = imgData.length; i < n; i+= step) {
+                if(type==='rgb'){
+                    var tmp=tt-(imgData[i]+imgData[i+1]+imgData[i+2])/3;
+                }
+                else if(type ==='red'){
+                    var tmp=tt-(imgData[i]);
+                }
+                else if(type==='green'){
+                    var tmp=tt-(imgData[i+1]);
+                }
+                else if(type==='blue'){
+                    var tmp=tt-(imgData[i+2]);
+                }
+                //console.log(tmp);
+                vari += Math.pow(tmp, 2);
+            }
+            vari = vari/pix;
+            var stdev=Math.sqrt(vari);
             /*for (var i = 0, n = imgData.length; i < n; i+= step) {
                 if (type === 'rgb') {
                     redavg += imgData[i];
@@ -482,9 +506,15 @@
            // document.getElementById("cal").removeChild("All")
             var node = document.createElement("LI");
             var textnode = document.createTextNode("Mean : "+tt);
+            var textnode3 = document.createTextNode("Standard Deviation : "+stdev.toFixed(2));
+
             var textnode1 = document.createTextNode("Pixels : "+pix);
             var textnode2 = document.createTextNode("RGB Avg : "+redavg+" | "+greenavg+" | "+blueavg);
+
             node.appendChild(textnode);
+            document.getElementById("cal").appendChild(node);
+            node = document.createElement("LI");
+            node.appendChild(textnode3);
             document.getElementById("cal").appendChild(node);
             node = document.createElement("LI");
             node.appendChild(textnode1);

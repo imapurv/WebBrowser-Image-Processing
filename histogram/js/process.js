@@ -7,10 +7,16 @@ function closeNav() {
     document.getElementById("contain").style.marginLeft = "0";
 }
 var old=0;
+var oldd=0;
 function updateTextInput(val) {
   //  document.getElementById('textInput').value=val+"%";
-    brightness(val-old);
-    old=val;
+    brightness(val);
+
+}
+function updateTextInputd(val) {
+    //  document.getElementById('textInput').value=val+"%";
+    brightnessd(val);
+
 }
 function brightness(val) {
     var tval=parseInt(val);
@@ -84,7 +90,7 @@ function newImage(url) {
 //img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
 function invert() {
 
-    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+    var idataSrc = original, // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
@@ -94,6 +100,7 @@ function invert() {
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+
         dataTrg[i]     = 255 - dataSrc[i];     // red
         dataTrg[i + 1] = 255 - dataSrc[i + 1]; // green
         dataTrg[i + 2] = 255 - dataSrc[i + 2]; // blue
@@ -105,13 +112,13 @@ function invert() {
     // put back luma data so we can save it as image
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
-    stack.push(idataTrg);
-    value++;
+   // stack.push(idataTrg);
+    //value++;
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
 }
 function threshold(){
-    var srcc= ctx.getImageData(0, 0, c.width, c.height);
+    var srcc= original;
     var d =srcc.data;
 
     for (var i=0; i<d.length; i+=4) {
@@ -127,7 +134,45 @@ function threshold(){
 }
 function brightness(val) {
     var tval=parseInt(val);
-    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+    var idataSrc = original, // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+    //alert(tval+" "+histType);
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+        if(histType.value=='red')
+             dataTrg[i]     =dataSrc[i]+tval ;     // red
+        else
+            dataTrg[i]=dataSrc[i];
+        if(histType.value=='green')
+        dataTrg[i + 1] = dataSrc[i + 1]+tval; // green
+        else
+            dataTrg[i + 1] = dataSrc[i + 1];
+        if(histType.value=='blue')
+        dataTrg[i + 2] = dataSrc[i + 2]+tval; // blue
+        else
+            dataTrg[i + 2] = dataSrc[i + 2];
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+    }
+
+    // put back luma data so we can save it as image
+    //value++;
+    ctx.putImageData(idataTrg, 0, 0);
+    //demo.src = c.toDataURL();                                 // set demo result's src url
+    //stack.push(idataTrg);
+    // restore backup data
+    //ctx.putImageData(idataSrc, 0, 0);
+}
+function brightnessd(val) {
+    var tval=parseInt(val);
+    tval=255-tval;
+    var idataSrc = original, // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
@@ -137,19 +182,29 @@ function brightness(val) {
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-        dataTrg[i]     +=dataSrc[i]+tval ;     // red
-        dataTrg[i + 1] =tval +dataSrc[i + 1]; // green
-        dataTrg[i + 2] = tval+ dataSrc[i + 2]; // blue
+
+        if(histType.value=='red')
+            dataTrg[i]     =dataSrc[i]+tval ;     // red
+        else
+            dataTrg[i]=dataSrc[i];
+        if(histType.value=='green')
+            dataTrg[i + 1] = dataSrc[i + 1]+tval; // green
+        else
+            dataTrg[i + 1] = dataSrc[i + 1];
+        if(histType.value=='blue')
+            dataTrg[i + 2] = dataSrc[i + 2]+tval; // blue
+        else
+            dataTrg[i + 2] = dataSrc[i + 2];
         // update target's RGB using the same luma value for all channels
         //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
         dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
     }
 
     // put back luma data so we can save it as image
-    value++;
+    //value++;
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
-    stack.push(idataTrg);
+    //stack.push(idataTrg);
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
 }
@@ -229,4 +284,209 @@ function sharpen(){
     }
 
     ctx.putImageData(output, 0, 0);
+}
+function linear_stretch() {
+
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+    var inlo1 = 255,inlo2 = 255,inlo3 = 255;
+    var inup1 = 0,inup2 = 0,inup3 = 0;
+
+    for(; i < len; i += 4) {
+        if(inlo1 > dataSrc[i] ){
+            inlo1 = dataSrc[i];
+        }
+        if(inlo2 > dataSrc[i+1] ){
+            inlo2 = dataSrc[i+1];
+        }
+        if(inlo3 > dataSrc[i+2] ){
+            inlo3 = dataSrc[i+2];
+        }
+        if(inup1 < dataSrc[i] ){
+            inup1 = dataSrc[i];
+        }
+        if(inup2 < dataSrc[i+1] ){
+            inup2 = dataSrc[i+1];
+        }
+        if(inup3 < dataSrc[i+2] ){
+            inup3 = dataSrc[i+2];
+        }
+    }
+    console.log(inlo1+" "+inlo2+" "+inlo3);
+    console.log(inup1+" "+inup2+" "+inup3);
+    // convert by iterating over each pixel each representing RGBA
+    i=0;
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+        //console.log("here");
+        dataTrg[i] = (dataSrc[i] - inlo1) * ((255)/(inup1 - inlo1)) + 0;// red
+        dataTrg[i + 1] = (dataSrc[i + 1] - inlo2) * ((255)/(inup2 - inlo2)) + 0; // green
+        dataTrg[i + 2] = (dataSrc[i + 2] - inlo3) * ((255)/(inup3 - inlo3)) + 0; // blue
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];
+
+        //console.log(dataTrg[i]+" : ");
+    }
+
+    // put back luma data so we can save it as image
+    ctx.putImageData(idataTrg, 0, 0);
+    //demo.src = c.toDataURL();                                 // set demo result's src url
+    original=ctx.getImageData(0, 0, c.width, c.height);
+    // restore backup data
+    //ctx.putImageData(idataSrc, 0, 0);
+}
+
+function log_stretch() {
+
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+        dataTrg[i] = Math.log(dataSrc[i] + 1);// red
+        dataTrg[i + 1] = Math.log(dataSrc[i + 1] + 1); // green
+        dataTrg[i + 2] = Math.log(dataSrc[i + 2] + 1); // blue
+        console.log(dataTrg[i]+" : ");
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+    }
+
+    // put back luma data so we can save it as image
+    ctx.putImageData(idataTrg, 0, 0);
+    //demo.src = c.toDataURL();                                 // set demo result's src url
+
+    // restore backup data
+    //ctx.putImageData(idataSrc, 0, 0);
+}
+
+function root_stretch() {
+
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+        dataTrg[i] = Math.sqrt(dataSrc[i]);// red
+        dataTrg[i + 1] = Math.sqrt(dataSrc[i + 1]); // green
+        dataTrg[i + 2] = Math.sqrt(dataSrc[i + 2]); // blue
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+    }
+
+    // put back luma data so we can save it as image
+    ctx.putImageData(idataTrg, 0, 0);
+    //demo.src = c.toDataURL();                                 // set demo result's src url
+
+    // restore backup data
+    //ctx.putImageData(idataSrc, 0, 0);
+}
+
+function histogram_equilization() {
+
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+    //pmf
+    var step=4; var val;
+    var redc=[];
+    var greenc=[];
+    var bluec=[];
+    i=0;
+
+    for(; i < 255; i++) {
+
+        redc[i]=0;
+        greenc[i]=0;
+        bluec[i]=0;
+    }
+    i=0;
+    for (var i = 0, n = imgData.length; i < n; i+= step) {
+
+
+        if(imgData[i] in redc){
+            redc[imgData[i]]++;
+        }
+        else
+            redc[imgData[i]]=1;
+        if(imgData[i+1] in bluec){
+            bluec[imgData[i+1]]++;
+        }
+        else
+            bluec[imgData[i+1]]=1;
+        if(imgData[i+2] in greenc){
+            greenc[imgData[i+2]]++;
+        }
+        else
+            greenc[imgData[i+2]]=1;
+
+    }
+    var cdf=[];
+    var pmf=[];
+    i=0;
+    var total=len/4;
+    for(; i < 255; i++) {
+
+        //console.log(i+" : "+redc[i]+" "+bluec[i]+" "+greenc[i]);
+        if(i==0){
+
+            continue;
+        }
+        redc[i]+=redc[i-1];
+        bluec[i]+=bluec[i-1];
+        greenc[i]+=greenc[i-1];
+        console.log(i+" : "+redc[i]+" "+bluec[i]+" "+greenc[i]);
+    }
+    i=0;
+    total=total/4/255;
+    console.log("total : "+total);
+    for(; i < 255; i++) {
+
+        redc[i]=redc[i]/total;
+        bluec[i]=bluec[i]/total;
+        greenc[i]=greenc[i]/total;
+        console.log(i+" : "+redc[i]+" "+bluec[i]+" "+greenc[i]);
+        //
+    }
+
+    //cdf
+
+
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+        dataTrg[i] = redc[i];// red
+        dataTrg[i + 1] = bluec[i]; // green
+        dataTrg[i + 2] =  greenc[i]; // blue
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+    }
+
+    // put back luma data so we can save it as image
+    ctx.putImageData(idataTrg, 0, 0);
+    //demo.src = c.toDataURL();                                 // set demo result's src url
+    //stack.push(idataTrg);
+   // value++;
+    // restore backup data
+    //ctx.putImageData(idataSrc, 0, 0);
 }
