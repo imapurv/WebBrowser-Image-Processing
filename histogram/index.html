@@ -96,12 +96,12 @@
 
                                     <div id="range">
 
-                                        <input type="range" id="myRangestart" class="center" value="0" min="0" max="255" onchange="updateTextInput(this.value);">
+                                        <input type="range" id="myRangestart" class="center"  value="0" min="0" max="255" onchange="updateTextInput(this.value);">
                                         <div class="row">
                                             <div class="col-sm-6 text-left" ><kbd>0</kbd> </div>
                                             <div class="col-sm-6 text-right"> <kbd>255</kbd>   </div>
                                         </div>
-                                        <input type="range" id="myRangeend" class="center" value="255" min="0" max="255" onchange="updateTextInputd(this.value);">
+                                        <input type="range" id="myRangeend" class="center"  value="255" min="0" max="255" onchange="updateTextInputd(this.value);">
                                         <div class="row">
                                             <div class="col-sm-6 text-left" ><kbd>0</kbd> </div>
                                             <div class="col-sm-6 text-right"> <kbd>255</kbd>   </div>
@@ -160,7 +160,7 @@
                                     </form>
                                     <a onclick="linear_stretch()" class="btn btn-default">Linear</a>
                                     <hr>
-                                    <a onclick=" histogram_equilization()" class="btn btn-default">Histogram Equilization</a>
+                                    <a onclick=" root_stretch()" class="btn btn-default">Log Stretch</a>
 
                                 </div>
                             </div>
@@ -654,6 +654,9 @@
         plotFill.addEventListener('change', updateHists, false);
         plotColors.addEventListener('change', updateHists, false);
         accuracy.addEventListener('change', updateHists, false);
+
+        var red1=0,red2=255,blue1=0,blue2=255,green1=0,green2=255;
+
         function changer(t){
             if(t==1){
                 histType.value="rgb";
@@ -661,18 +664,33 @@
             }
             if(t==2){
                 histType.value="red";
+
                 updateHist("red");
+                console.log("hellored");
+                console.log(red1);
+                console.log(red2);
+                var input=document.getElementById("myRangestart");
+                input.value=red1;
+                input=document.getElementById("myRangeend");
+                input.value=red2;
+
                 // histo.
             }
             else if(t==3){
                 histType.value="blue";
                 updateHist("blue");
-                // histo.updateHist();
+                var input=document.getElementById("myRangestart");
+                input.value=blue1;
+                input=document.getElementById("myRangeend");
+                input.value=blue2;                // histo.updateHist();
             }
             else if(t==4){
                 histType.value="green";
                 updateHist("green");
-
+                var input=document.getElementById("myRangestart");
+                input.value=green1;
+                input=document.getElementById("myRangeend");
+                input.value=green2;                // histo.updateHist();
             }
         }window.onload = function() {
             histType.value="rgb";

@@ -144,16 +144,22 @@ function brightness(val) {
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-        if(histType.value=='red')
-             dataTrg[i]     =dataSrc[i]+tval ;     // red
+        if(histType.value=='red') {
+            dataTrg[i] = dataSrc[i] + tval;
+            red1=tval;
+        }// red
         else
             dataTrg[i]=dataSrc[i];
-        if(histType.value=='green')
-        dataTrg[i + 1] = dataSrc[i + 1]+tval; // green
+        if(histType.value=='green') {
+            dataTrg[i + 1] = dataSrc[i + 1]+tval;
+            green1=tval;
+        }// green
         else
             dataTrg[i + 1] = dataSrc[i + 1];
-        if(histType.value=='blue')
-        dataTrg[i + 2] = dataSrc[i + 2]+tval; // blue
+        if(histType.value=='blue') {
+            dataTrg[i + 2] = dataSrc[i + 2] + tval;
+            blue1=tval;
+        }// blue
         else
             dataTrg[i + 2] = dataSrc[i + 2];
         // update target's RGB using the same luma value for all channels
@@ -170,6 +176,7 @@ function brightness(val) {
     //ctx.putImageData(idataSrc, 0, 0);
 }
 function brightnessd(val) {
+
     var tval=parseInt(val);
     tval=255-tval;
     var idataSrc = original, // original
@@ -183,16 +190,22 @@ function brightnessd(val) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
 
-        if(histType.value=='red')
-            dataTrg[i]     =dataSrc[i]+tval ;     // red
+        if(histType.value=='red') {
+            dataTrg[i] = dataSrc[i] + tval;
+            red2=255-tval;
+        }// red
         else
             dataTrg[i]=dataSrc[i];
-        if(histType.value=='green')
-            dataTrg[i + 1] = dataSrc[i + 1]+tval; // green
+        if(histType.value=='green') {
+            dataTrg[i + 1] = dataSrc[i + 1]+tval;
+            green2=255-tval;
+        }// green
         else
             dataTrg[i + 1] = dataSrc[i + 1];
-        if(histType.value=='blue')
-            dataTrg[i + 2] = dataSrc[i + 2]+tval; // blue
+        if(histType.value=='blue') {
+            dataTrg[i + 2] = dataSrc[i + 2] + tval;
+            blue2=255-tval;
+        }// blue
         else
             dataTrg[i + 2] = dataSrc[i + 2];
         // update target's RGB using the same luma value for all channels
@@ -315,8 +328,8 @@ function linear_stretch() {
             inup3 = dataSrc[i+2];
         }
     }
-    console.log(inlo1+" "+inlo2+" "+inlo3);
-    console.log(inup1+" "+inup2+" "+inup3);
+   // console.log(inlo1+" "+inlo2+" "+inlo3);
+   // console.log(inup1+" "+inup2+" "+inup3);
     // convert by iterating over each pixel each representing RGBA
     i=0;
     for(; i < len; i += 4) {
@@ -341,22 +354,44 @@ function linear_stretch() {
     //ctx.putImageData(idataSrc, 0, 0);
 }
 
+Math.log10 = Math.log10 || function(x) {
+        return Math.log(x) * Math.LOG10E;
+    };
+
 function log_stretch() {
 
+    var cons1, cons2, cons3;
     var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
         len = dataSrc.length, i = 0, luma;
+    var inup1 = 0,inup2 = 0,inup3 = 0;
 
+    for(; i < len; i += 4) {
+        if(inup1 < dataSrc[i] ){
+            inup1 = dataSrc[i];
+        }
+        if(inup2 < dataSrc[i+1] ){
+            inup2 = dataSrc[i+1];
+        }
+        if(inup3 < dataSrc[i+2] ){
+            inup3 = dataSrc[i+2];
+        }
+    }
+    cons1 = 255/ (Math.log10(1 + inup1));
+    cons2 = 255/ (Math.log10(1 + inup2));
+    cons3 = 255/ (Math.log10(1 + inup3));
+    console.log("Log constants : "+cons1 + " " +cons2+" "+cons3);
     // convert by iterating over each pixel each representing RGBA
+    i=0;
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-        dataTrg[i] = Math.log(dataSrc[i] + 1);// red
-        dataTrg[i + 1] = Math.log(dataSrc[i + 1] + 1); // green
-        dataTrg[i + 2] = Math.log(dataSrc[i + 2] + 1); // blue
-        console.log(dataTrg[i]+" : ");
+        dataTrg[i] = cons1 * Math.log10(dataSrc[i] + 1);// red
+        dataTrg[i + 1] = cons2 * Math.log10(dataSrc[i + 1] + 1); // green
+        dataTrg[i + 2] = cons3 * Math.log10(dataSrc[i + 2] + 1); // blue
+        //console.log(dataTrg[i]+" : "+dataTrg[i+1]+" : "+dataTrg[i+2]+" : ");
         // update target's RGB using the same luma value for all channels
         //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
         dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
@@ -365,7 +400,7 @@ function log_stretch() {
     // put back luma data so we can save it as image
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
-
+    original=ctx.getImageData(0, 0, c.width, c.height);
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
 }
@@ -377,14 +412,32 @@ function root_stretch() {
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
         len = dataSrc.length, i = 0, luma;
-
+    var inup1 = 0,inup2 = 0,inup3 = 0;
+    var cons1, cons2, cons3;
+    for(; i < len; i += 4) {
+        if(inup1 < dataSrc[i] ){
+            inup1 = dataSrc[i];
+        }
+        if(inup2 < dataSrc[i+1] ){
+            inup2 = dataSrc[i+1];
+        }
+        if(inup3 < dataSrc[i+2] ){
+            inup3 = dataSrc[i+2];
+        }
+    }
+    cons1 = 255/ (Math.sqrt(inup1));
+    cons2 = 255/ (Math.sqrt(inup2));
+    cons3 = 255/ (Math.sqrt(inup3));
+    console.log("Log constants : "+cons1 + " " +cons2+" "+cons3);
+    // convert by iterating over each pixel each representing RGBA
+    i=0;
     // convert by iterating over each pixel each representing RGBA
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
         //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
-        dataTrg[i] = Math.sqrt(dataSrc[i]);// red
-        dataTrg[i + 1] = Math.sqrt(dataSrc[i + 1]); // green
-        dataTrg[i + 2] = Math.sqrt(dataSrc[i + 2]); // blue
+        dataTrg[i] = cons1 * Math.sqrt(dataSrc[i]);// red
+        dataTrg[i + 1] = cons2 * Math.sqrt(dataSrc[i + 1]); // green
+        dataTrg[i + 2] = cons3 * Math.sqrt(dataSrc[i + 2]); // blue
         // update target's RGB using the same luma value for all channels
         //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
         dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
@@ -469,7 +522,7 @@ function histogram_equilization() {
 
     //cdf
 
-
+    i=0;
     // convert by iterating over each pixel each representing RGBA
     for(; i < len; i += 4) {
         // calculate luma, here using rec601
