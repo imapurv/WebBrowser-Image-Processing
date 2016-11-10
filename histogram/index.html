@@ -31,12 +31,14 @@
 
 
     // --></script>
+    <style>
+        #send { display:block; margin:1em auto; background:#fff; border:1px solid #ccc }
+    </style>
 </head>
 
 <body>
     <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+                   <![endif]-->
     <nav class="navbar navbar-default ">
         <div class="container bg-1">
             <div class="navbar-header bg-1"> <a class="navbar-brand" href="#">Histogram Image Density</a> </div>
@@ -71,7 +73,7 @@
                     </div>
                    <!-- <p><a><img
                         id="myImg" src="mushroom_kingdom.jpg" width="300" alt=""></a></p>-->
-
+                    <div id="status"></div>
 
                 </div>
 
@@ -150,7 +152,7 @@
                                         <hr>
                                     <p><label>Plot fill <input class="form-control" id="plotFill" type="checkbox"></label></p>
                                         <hr>
-                                    <p><label>Plot colors: <select id="plotColors" class="form-control">
+                                    <p hidden><label>Plot colors: <select id="plotColors" class="form-control">
                                         <option value="flat">Flat colors</option>
                                         <option value="none">None</option>
 
@@ -161,6 +163,13 @@
                                     <a onclick="linear_stretch()" class="btn btn-default">Linear</a>
                                     <hr>
                                     <a onclick=" root_stretch()" class="btn btn-default">Log Stretch</a>
+                                    <a onclick=" histogram_equilization()" class="btn btn-default">Histogram Equilization</a>
+                                    <hr>
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Zoom</button>
+                                    <hr>
+
+                                    <a onclick=" root_stretch()" class="btn btn-default">Log Stretch</a>
+
 
                                 </div>
                             </div>
@@ -172,6 +181,103 @@
         </div>
     </div>
     </div>
+    <div class="modal fade" id="bandmodal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Choose your coresponding Bands</h4>
+                </div>
+                <div class="modal-body">
+
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-6"><h4>Band 1 :</h4>
+
+                                </div>
+                                <div class="col-sm-6">
+
+                                    <select id="one">
+                                        <option selected>One</option>
+                                        <option >Two</option>
+                                        <option>Three</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="list-group-item"> <div class="row">
+                            <div class="col-sm-6"><h4>Band 2 :</h4>
+
+                            </div>
+                            <div class="col-sm-6">
+
+                                <select id="two">
+                                    <option >One</option>
+                                    <option selected>Two</option>
+                                    <option>Three</option>
+
+                                </select>
+
+                            </div>
+                        </div></li>
+                        <li class="list-group-item"> <div class="row">
+                            <div class="col-sm-6"><h4>Band 3 :</h4>
+                            </div>
+                            <div class="col-sm-6">
+
+                                <select id="three">
+                                    <option >One</option>
+                                    <option >Two</option>
+                                    <option selected>Three</option>
+
+                                </select>
+                            </div>
+                        </div></li>
+                    </ul>
+
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="text-center">
+                                <button onclick="loadImage()" type="button center-block" class="btn btn-success">Load Image</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Zoom View</h4>
+                </div>
+                <div class="modal-body">
+                    <canvas id="popupzoom"></canvas>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <br>
     <hr>
     <div class="row"> <span class="center-block text-center">Done Editing? <a href="#" id="down" class="btn btn-success" role="button">Download Image</a></span> </div>
@@ -180,10 +286,26 @@
 
         </footer>
     <!-- /container -->
-        <script>
 
-        </script>
     <script>
+        function overlay(){
+
+            el = document.getElementById("overlay");
+            el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+
+        }
+
+        function close() {
+            document.getElementById("overlay").style.visibility = 'hidden';
+        }
+
+        window.urlf;
+        $('#myModal').on('shown.bs.modal', function (e) {
+            // do something...
+            // alert("opweaw");
+            zoom();
+
+        });
         document.getElementById('down').addEventListener('click', function() {
             downloadCanvas(this, 'c', 'test.png');
         }, false);
@@ -229,10 +351,10 @@
         var stack = [];
         newImage("http://i.imgur.com/OrYVGI8.jpg");
 
-
+        window.canvas;
         $("#file").change(function(evt){
             var parentEl = $("#maincontent");
-
+            $('#bandmodal').modal('show');
             console.debug("Event image...");
             var tgt = evt.target || window.event.srcElement,
                 files = tgt.files;
@@ -241,13 +363,18 @@
             if (extensions != "tiff" && extensions != "tif"){
                 var URL = window.webkitURL || window.URL;
                 var url = URL.createObjectURL(evt.target.files[0]);
+                window.urlf=url;
                 newImage(url);
+
                 histType.value="rgb";
                 updateHist("rgb");
 
             }
             else {
                 var fileTypes = ['jpg', 'jpeg', 'png', 'tiff', 'tif', 'pdf'];
+                var URL = window.webkitURL || window.URL;
+                var url = URL.createObjectURL(evt.target.files[0]);
+                window.urlf=url;
                 parentEl.find("canvas").remove();
                 if (FileReader && files && files.length) {
                     var fr = new FileReader();
@@ -262,6 +389,7 @@
                         success = fileTypes.indexOf(extension) > -1;
                         if (success) {
                             if (tif) {
+                                window.urlf="tiff";
                                 //Using tiff.min.js library - https://github.com/seikichi/tiff.js/tree/master
                                 console.debug("Parsing TIFF image...");
                                 //initialize with 100MB for large files
@@ -272,16 +400,32 @@
                                     buffer: e.target.result
                                 });
                                 var tiffCanvas = tiff.toCanvas();
+                                window.canvas=tiffCanvas;
+                                tiffCanvas.toBlob(function(blob) {
+                                    saveAs(blob, "pretty image.png");
+                                });
                                 $(tiffCanvas).css({
 
                                     "z-index":"-10",
                                     "max-width" :"100%",
                                     "max-height" :"100%"
-                                }).addClass("ui-draggable ui-draggable-handle");
+                                });
                                 tiffCanvas.id="c";
                                 console.debug("converted");
                                 $(parentEl).append(tiffCanvas);
                                 ctx=tiffCanvas.getContext("2d");
+                                $('#c').mousemove(function(e) {
+                                    console.log("here ");
+                                    var pos = findPos(this);
+                                    var x = e.pageX - pos.x;
+                                    var y = e.pageY - pos.y;
+                                    var coord = "x=" + x + ", y=" + y;
+                                    var c1 = this.getContext('2d');
+                                    var p = c1.getImageData(x, y, 1, 1).data;
+                                    //var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+                                    //$('#status').html(coord + "<br>" + hex);
+                                    $('#status').html(coord + "<br>" +"<p style=\"color:red;display:inline\">R: "+" "+ p[0]+"</p><p style=\"color:green;display:inline\">  G: "+p[1]+"</p> <p style=\"color:blue;display:inline\">  B: "+p[2]+"</p>");
+                                });
                                 runner(ctx);
                             } else if (pdf) {
 
@@ -322,6 +466,7 @@
             plotStyle = document.getElementById('plotStyle'),
             calc = document.getElementById('cal'),
             plotFill = document.getElementById('plotFill'),
+
             plotColors = document.getElementById('plotColors'),
             imgSelector = document.getElementById('imgSelector'),
             gradients = {
@@ -357,6 +502,7 @@
             },
             discreetWidth = Math.round(histCanvas.width / 255),
             imgData = null;
+           plotFill.checked=true;
         var initHistogram = function () {
             // Plot defaults
             accuracy.value = 1;
@@ -696,7 +842,211 @@
             histType.value="rgb";
             updateHist("rgb");
         };
+        function findPos(obj) {
+            var curleft = 0, curtop = 0;
+            if (obj.offsetParent) {
+                do {
+                    curleft += obj.offsetLeft;
+                    curtop += obj.offsetTop;
+                } while (obj = obj.offsetParent);
+                return { x: curleft, y: curtop };
+            }
+            return undefined;
+        }
 
+
+
+        // set up some squares
+        //var example = document.getElementById('example');
+        //var context = example.getContext('2d');
+        //context.fillStyle = "rgb(255,0,0)";
+        //context.fillRect(0, 0, 50, 50);
+        //context.fillStyle = "rgb(0,0,255)";
+        //context.fillRect(55, 0, 50, 50);
+
+        $('#c').mousemove(function(e) {
+            console.log("here ");
+            var pos = findPos(this);
+            var x = e.pageX - pos.x;
+            var y = e.pageY - pos.y;
+            var coord = "x=" + x + ", y=" + y;
+            var c1 = this.getContext('2d');
+            var p = c1.getImageData(x, y, 1, 1).data;
+            //var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+            //$('#status').html(coord + "<br>" + hex);
+            $('#status').html(coord + "<br>" +"<p style=\"color:red;display:inline\">R: "+" "+ p[0]+"</p><p style=\"color:green;display:inline\">  G: "+p[1]+"</p> <p style=\"color:blue;display:inline\">  B: "+p[2]+"</p>");
+        });
+
+
+
+        function zoom() {
+            var gkhead = new Image;
+
+            var canvas = document.getElementById("popupzoom");
+            canvas.width = 800;
+            canvas.height = 600;
+            var ctx = canvas.getContext('2d');
+            var starter = function () {
+
+
+                trackTransforms(ctx);
+
+                function redraw() {
+                    // Clear the entire canvas
+                    //var originals=ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    var p1 = ctx.transformedPoint(0, 0);
+                    var p2 = ctx.transformedPoint(canvas.width, canvas.height);
+                    ctx.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
+                    // alert("asdasd");
+                    ctx.save();
+                    ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    ctx.clearRect(0, 0, c.width, c.height);
+                    ctx.restore();
+                    //console.log(original.data);
+                    // ctx.fillRect(0,0,100,100);
+                    //newImage(url);
+                    gkhead.src = window.urlf;
+
+
+                    if(window.urlf=="tiff"){
+                        ctx.drawImage(window.canvas, 0, 0);
+                    }
+                    else
+                        ctx.drawImage(c, 0, 0);
+                    //var myImageData = ctx.createImageData(original.data);
+                    console.log(window.urlf);
+                    //ctx.drawImage(gkhead, 0, 0);
+                    //
+
+                    //ctx.drawImage(window.urlf, 0, 0);
+                    //ctx.putImageData(window.canvas, 0, 0);
+                }
+
+                redraw();
+
+                var lastX = c.width / 2, lastY = c.height / 2;
+
+                var dragStart, dragged;
+
+                canvas.addEventListener('mousedown', function (evt) {
+                    document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+                    lastX = evt.offsetX || (evt.pageX - c.offsetLeft);
+                    lastY = evt.offsetY || (evt.pageY - c.offsetTop);
+                    dragStart = ctx.transformedPoint(lastX, lastY);
+                    dragged = false;
+                }, false);
+
+                canvas.addEventListener('mousemove', function (evt) {
+                    lastX = evt.offsetX || (evt.pageX - c.offsetLeft);
+                    lastY = evt.offsetY || (evt.pageY - c.offsetTop);
+                    dragged = true;
+                    if (dragStart) {
+                        var pt = ctx.transformedPoint(lastX, lastY);
+                        ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+                        redraw();
+                    }
+                }, false);
+
+                canvas.addEventListener('mouseup', function (evt) {
+                    dragStart = null;
+                    if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+                }, false);
+
+                var scaleFactor = 1.1;
+
+                var zoom = function (clicks) {
+                    var pt = ctx.transformedPoint(lastX, lastY);
+                    ctx.translate(pt.x, pt.y);
+                    var factor = Math.pow(scaleFactor, clicks);
+                    ctx.scale(factor, factor);
+                    ctx.translate(-pt.x, -pt.y);
+                    redraw();
+                }
+
+                var handleScroll = function (evt) {
+                    var delta = evt.wheelDelta ? evt.wheelDelta / 40 : evt.detail ? -evt.detail : 0;
+                    if (delta) zoom(delta);
+                    return evt.preventDefault() && false;
+                };
+
+                canvas.addEventListener('DOMMouseScroll', handleScroll, false);
+                canvas.addEventListener('mousewheel', handleScroll, false);
+            };
+
+            starter();
+
+            // Adds ctx.getTransform() - returns an SVGMatrix
+            // Adds ctx.transformedPoint(x,y) - returns an SVGPoint
+            function trackTransforms(ctx) {
+                var svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+                var xform = svg.createSVGMatrix();
+                ctx.getTransform = function () {
+                    return xform;
+                };
+
+                var savedTransforms = [];
+                var save = ctx.save;
+                ctx.save = function () {
+                    savedTransforms.push(xform.translate(0, 0));
+                    return save.call(ctx);
+                };
+
+                var restore = ctx.restore;
+                ctx.restore = function () {
+                    xform = savedTransforms.pop();
+                    return restore.call(ctx);
+                };
+
+                var scale = ctx.scale;
+                ctx.scale = function (sx, sy) {
+                    xform = xform.scaleNonUniform(sx, sy);
+                    return scale.call(ctx, sx, sy);
+                };
+
+                var rotate = ctx.rotate;
+                ctx.rotate = function (radians) {
+                    xform = xform.rotate(radians * 180 / Math.PI);
+                    return rotate.call(ctx, radians);
+                };
+
+                var translate = ctx.translate;
+                ctx.translate = function (dx, dy) {
+                    xform = xform.translate(dx, dy);
+                    return translate.call(ctx, dx, dy);
+                };
+
+                var transform = ctx.transform;
+                ctx.transform = function (a, b, c, d, e, f) {
+                    var m2 = svg.createSVGMatrix();
+                    m2.a = a;
+                    m2.b = b;
+                    m2.c = c;
+                    m2.d = d;
+                    m2.e = e;
+                    m2.f = f;
+                    xform = xform.multiply(m2);
+                    return transform.call(ctx, a, b, c, d, e, f);
+                };
+
+                var setTransform = ctx.setTransform;
+                ctx.setTransform = function (a, b, c, d, e, f) {
+                    xform.a = a;
+                    xform.b = b;
+                    xform.c = c;
+                    xform.d = d;
+                    xform.e = e;
+                    xform.f = f;
+                    return setTransform.call(ctx, a, b, c, d, e, f);
+                };
+
+                var pt = svg.createSVGPoint();
+                ctx.transformedPoint = function (x, y) {
+                    pt.x = x;
+                    pt.y = y;
+                    return pt.matrixTransform(xform.inverse());
+                }
+            }
+        }
         window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
     </script>
     <script src="js/vendor/bootstrap.min.js"></script>

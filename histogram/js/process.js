@@ -8,6 +8,7 @@ function closeNav() {
 }
 var old=0;
 var oldd=0;
+
 function updateTextInput(val) {
   //  document.getElementById('textInput').value=val+"%";
     brightness(val);
@@ -66,6 +67,7 @@ function newImage(url) {
     var img = new Image;
     img.crossOrigin = "";
     img.src = url;
+    window.urlf=url;
     img.onload = function() {
         c.width = img.naturalWidth;  c.height =  img.naturalHeight;
         //ctx.canvas.width  = window.innerWidth;
@@ -248,7 +250,71 @@ function greyscale() {
     value++;
 }
 
+function loadImage(){
 
+
+    var a,b,cc;
+    if($('#one').val()=="One"){
+        a=0;
+    }
+    else if($('#one').val()=="Two"){
+        a=1;
+    }
+    else if($('#one').val()=="Three"){
+        a=2;
+    }
+    if($('#two').val()=="One"){
+       b=0;
+    }
+    else if($('#two').val()=="Two"){
+        b=1;
+    }
+    else if($('#two').val()=="Three"){
+        b=2;
+    }
+    if($('#three').val()=="One"){
+        cc=0;
+    }
+    else if($('#three').val()=="Two"){
+        cc=1;
+    }
+    else if($('#three').val()=="Three"){
+        cc=2;
+    }
+   // alert($('#one').val());
+    //alert(a+" "+b+" "+cc);
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+        // calculate luma, here using rec601
+        //luma = dataSrc[i] * 0.299 + dataSrc[i+1] * 0.587 + dataSrc[i+2] * 0.114;
+
+            dataTrg[i]     =dataSrc[i+a] ;     // red
+
+            dataTrg[i+1]     =dataSrc[i + b] ;
+
+            dataTrg[i+2]     =dataSrc[i + cc] ;
+
+        // update target's RGB using the same luma value for all channels
+        //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
+        dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
+    }
+
+    // put back luma data so we can save it as image
+
+    ctx.putImageData(idataTrg, 0, 0);
+
+    $('#bandmodal').modal('hide');
+    calcHist("rgb");
+    calcHist("red");
+
+
+}
 function sharpen(){
     var pixels= ctx.getImageData(0, 0, c.width, c.height);
     //var pixels =srcc.data;
@@ -300,7 +366,8 @@ function sharpen(){
 }
 function linear_stretch() {
 
-    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+    //alert("sdfsdf");
+    var idataSrc = original, // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
