@@ -622,6 +622,9 @@
                 vari += Math.pow(tmp, 2);
             }
             vari = vari/pix;
+            redavg = redavg/pix;
+            blueavg = blueavg/pix;
+            greenavg = greenavg/pix;
             var stdev=Math.sqrt(vari);
             /*for (var i = 0, n = imgData.length; i < n; i+= step) {
                 if (type === 'rgb') {
