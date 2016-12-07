@@ -18,15 +18,15 @@
     <link rel="stylesheet" href="css/main.css">
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/process.js" ></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
-    <script type="text/javascript" src="js/process.js" ></script>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
-    <script src="https://cdn.rawgit.com/seikichi/tiff.js/master/tiff.min.js"></script>
-
-    <script src="https://cdn.rawgit.com/rfvallina/Misc/master/pdf.js"></script>
-
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/process.js" ></script>
+    <script type="text/javascript" src="js/process.js" ></script>
+    <script type="text/javascript" src="js/jquery-1.12.4.js" ></script>
+    <script type="text/javascript" src="js/jquery-ui.js" ></script>
+    <script type="text/javascript" src="js/tiff.min.js" ></script>
+    <script type="text/javascript" src="js/pdf.js" ></script>
+    <script src="js/canny.min.js"></script>
     <script type="text/javascript"><!--
 
 
@@ -44,7 +44,7 @@
             <div class="navbar-header bg-1"> <a class="navbar-brand" href="#">Histogram Image Density</a> </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../index.html">Back</a></li>
+                    <li><a href="index.html">Back</a></li>
 
 
 
@@ -71,9 +71,27 @@
                         <!--<div id="output" height="600px" width="200px" style="background-color: #8f231e;z-index: 14">asdfasdf</div> -->
 
                     </div>
-                   <!-- <p><a><img
-                        id="myImg" src="mushroom_kingdom.jpg" width="300" alt=""></a></p>-->
-                    <div id="status"></div>
+
+
+                    <!-- <p><a><img
+                         id="myImg" src="mushroom_kingdom.jpg" width="300" alt=""></a></p>-->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="text-left">
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></button>
+                                <button onclick="undo()" type="button" class="btn btn-default" > <i class="fa fa-undo" aria-hidden="true"></i></button>
+
+
+
+
+                            </div>
+
+                            </div>
+                        <div class="col-sm-6"><div id="status"></div>
+                        </div>
+                        </div>
+
+                    <canvas id="output" ></canvas>
 
                 </div>
 
@@ -152,25 +170,28 @@
                                         <hr>
                                     <p><label>Plot fill <input class="form-control" id="plotFill" type="checkbox"></label></p>
                                         <hr>
-                                    <p hidden><label>Plot colors: <select id="plotColors" class="form-control">
+                                    <p><label>Plot colors: <select id="plotColors" class="form-control">
                                         <option value="flat">Flat colors</option>
                                         <option value="none">None</option>
 
                                         <option value="gradient">Gradients</option>
                                     </select></label></p>
-
+                                        <hr>
                                     </form>
+                                    <p>Operations : </p>
                                     <a onclick="linear_stretch()" class="btn btn-default">Linear</a>
-                                    <hr>
+
+                                    <a onclick="sharpen()" class="btn btn-default">Sharpness</a>
+                                    <a onclick="contrast(5)" class="btn btn-default">Contrast</a>
+
+                                    <a onclick="edge_detection()" class="btn btn-default">Edge Detection</a>
+
+
                                     <a onclick=" root_stretch()" class="btn btn-default">Log Stretch</a>
-                                    <a onclick=" histogram_equilization()" class="btn btn-default">Histogram Equilization</a>
+                                    <br>
+                                    <a onclick="greyscale()" class="btn btn-default">GreyScale</a>
+                                    <a onclick="threshold()" class="btn btn-default">Threshold</a>
                                     <hr>
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Zoom</button>
-                                    <hr>
-
-                                    <a onclick=" root_stretch()" class="btn btn-default">Log Stretch</a>
-
-
                                 </div>
                             </div>
                         </div>
@@ -280,7 +301,8 @@
     </div>
     <br>
     <hr>
-    <div class="row"> <span class="center-block text-center">Done Editing? <a href="#" id="down" class="btn btn-success" role="button">Download Image</a></span> </div>
+    <div class="row"> <span class="center-block text-center"><a href="#" id="down" class="btn btn-success" role="button"><i class="fa fa-download" aria-hidden="true"></i>
+ Download Image</a></span> </div>
     <br>
         <footer class="text-center navbar navbar-default ">
 
@@ -288,6 +310,19 @@
     <!-- /container -->
 
     <script>
+1
+        function edge_detection(){
+            var mycanvas = document.getElementById("output");
+            var mycanvas2 = document.getElementById("c");
+            var canny = CannyJS.canny(mycanvas2);
+            mycanvas.width=c.width;
+            mycanvas.height=c.height;
+            //var ctx = mycanvas.getContext('2d');
+            canny.drawOn(mycanvas);
+
+
+
+        }
         function overlay(){
 
             el = document.getElementById("overlay");
@@ -349,12 +384,18 @@
         var k=0;
         var original;
         var stack = [];
-        newImage("http://i.imgur.com/OrYVGI8.jpg");
+
+
+        init();
+       // newImage("http://i.imgur.com/OrYVGI8.jpg");
 
         window.canvas;
         $("#file").change(function(evt){
             var parentEl = $("#maincontent");
             $('#bandmodal').modal('show');
+            red1=0,red2=255,blue1=0,blue2=255,green1=0,green2=255;
+
+            // histo.updateHist();
             console.debug("Event image...");
             var tgt = evt.target || window.event.srcElement,
                 files = tgt.files;
@@ -394,7 +435,7 @@
                                 console.debug("Parsing TIFF image...");
                                 //initialize with 100MB for large files
                                 Tiff.initialize({
-                                    TOTAL_MEMORY: 100000000
+                                    TOTAL_MEMORY: 1000000000
                                 });
                                 var tiff = new Tiff({
                                     buffer: e.target.result
@@ -415,7 +456,7 @@
                                 $(parentEl).append(tiffCanvas);
                                 ctx=tiffCanvas.getContext("2d");
                                 $('#c').mousemove(function(e) {
-                                    console.log("here ");
+                                 //   console.log("here ");
                                     var pos = findPos(this);
                                     var x = e.pageX - pos.x;
                                     var y = e.pageY - pos.y;
@@ -430,7 +471,7 @@
                             } else if (pdf) {
 
                             } else {
-                                console.debug("render immmm");
+
                                 $(parentEl).append('<img src="' + fr.result + '" class="preview"/>');
                             }
                         }
@@ -524,7 +565,7 @@
 
         };
         var imgLoaded = function (t) {
-            imgData = original.data;
+            imgData = ctx.getImageData(0, 0, c.width, c.height).data;
 
             histType.value = t;
 
@@ -768,7 +809,7 @@
             runtime.innerHTML = 'Calculating histogram...';
 
             calcHist(tmp);
-            console.log("Here "+histType.value);
+           // console.log("Here "+histType.value);
             var timeEnd = (new Date()).getTime();
             runtime.innerHTML = 'Plot runtime: ' + (timeEnd - timeStart) + ' ms.';
         };
@@ -865,7 +906,7 @@
         //context.fillRect(55, 0, 50, 50);
 
         $('#c').mousemove(function(e) {
-            console.log("here ");
+            //console.log("here ");
             var pos = findPos(this);
             var x = e.pageX - pos.x;
             var y = e.pageY - pos.y;
@@ -900,8 +941,7 @@
                     // alert("asdasd");
                     ctx.save();
                     ctx.setTransform(1, 0, 0, 1, 0, 0);
-                    ctx.clearRect(0, 0, c.width, c.height);
-                    ctx.restore();
+                   ctx.restore();
                     //console.log(original.data);
                     // ctx.fillRect(0,0,100,100);
                     //newImage(url);
@@ -952,7 +992,7 @@
                     if (!dragged) zoom(evt.shiftKey ? -1 : 1);
                 }, false);
 
-                var scaleFactor = 1.1;
+                var scaleFactor = 1.05;
 
                 var zoom = function (clicks) {
                     var pt = ctx.transformedPoint(lastX, lastY);

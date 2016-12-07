@@ -50,9 +50,11 @@ function brightness(val) {
 //var width = img.naturalWidth; // this will be 300
 //var height = img.naturalHeight; // this will be 400
 function undo() {
-    if(value-1>=0)
-    ctx.putImageData(stack.pop(), 0, 0);
-    value--;
+    console.log("Size "+stack.length);
+    if (stack.length- 1 >= 0) {
+        ctx.putImageData(stack.pop(), 0, 0);
+
+    }
 }
 function restore() {
     ctx.putImageData(original, 0, 0);
@@ -82,6 +84,35 @@ function newImage(url) {
             c.height = window.innerHeight;
         }
         ctx.drawImage(img, 0, 0);
+        stack=[];
+        stack.push(ctx.getImageData(0, 0, c.width, c.height));
+        value++;
+        original=ctx.getImageData(0, 0, c.width, c.height);
+    };
+
+}
+function init() {
+    var img = new Image;
+    img.crossOrigin = "";
+    img.src = "img/demo_small.png";
+    var URL = window.webkitURL || window.URL;
+    //var url = URL.createObjectURL(img);
+
+    img.onload = function() {
+        c.width = img.naturalWidth;  c.height =  img.naturalHeight;
+        //ctx.canvas.width  = window.innerWidth;
+        // ctx.canvas.height = window.innerHeight;
+        if (c.width  > window.innerWidth)
+        {
+            c.width  = window.innerWidth;
+        }
+
+        if (c.height > window.innerHeight)
+        {
+            c.height = window.innerHeight;
+        }
+        stack=[];
+        ctx.drawImage(img, 0, 0);
         stack.push(ctx.getImageData(0, 0, c.width, c.height));
         value++;
         original=ctx.getImageData(0, 0, c.width, c.height);
@@ -90,7 +121,7 @@ function newImage(url) {
 }
 //var img = new Image();
 //img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
-function invert() {
+function invert(original) {
 
     var idataSrc = original, // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
@@ -120,7 +151,7 @@ function invert() {
     //ctx.putImageData(idataSrc, 0, 0);
 }
 function threshold(){
-    var srcc= original;
+    var srcc= ctx.getImageData(0, 0, c.width, c.height);
     var d =srcc.data;
 
     for (var i=0; i<d.length; i+=4) {
@@ -130,13 +161,13 @@ function threshold(){
         var v = (0.2126*r + 0.7152*g + 0.0722*b >= 150) ? 255 : 0;
         d[i] = d[i+1] = d[i+2] = v
     }
-    value++;
+
     stack.push(srcc);
     ctx.putImageData(srcc, 0, 0);
 }
 function brightness(val) {
     var tval=parseInt(val);
-    var idataSrc = original, // original
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
@@ -171,17 +202,48 @@ function brightness(val) {
 
     // put back luma data so we can save it as image
     //value++;
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
     //stack.push(idataTrg);
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
 }
+function contrast(val){
+
+
+
+    var tval=50;
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
+        idataTrg = ctx.createImageData(c.width, c.height),    // empty data
+        dataSrc = idataSrc.data,                              // reference the data itself
+        dataTrg = idataTrg.data,
+        len = dataSrc.length, i = 0, luma;
+    var factor = (259 * (50 + 255)) / (255 * (259 - 50));
+    // convert by iterating over each pixel each representing RGBA
+    for(; i < len; i += 4) {
+
+        dataTrg[i] = factor * (dataSrc[i] - 128) + 128;
+        dataTrg[i+1] = factor * (dataSrc[i+1] - 128) + 128;
+        dataTrg[i+2] = factor * (dataSrc[i+2] - 128) + 128;
+        dataTrg[i+3] = dataSrc[i+3];
+    }
+
+    // put back luma data so we can save it as image
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
+    ctx.putImageData(idataTrg, 0, 0);
+
+
+
+
+
+
+}
 function brightnessd(val) {
 
     var tval=parseInt(val);
     tval=255-tval;
-    var idataSrc = original, // original
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
@@ -217,6 +279,7 @@ function brightnessd(val) {
 
     // put back luma data so we can save it as image
     //value++;
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
     //stack.push(idataTrg);
@@ -240,14 +303,14 @@ function greyscale() {
         dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
         dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
     }
-
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     // put back luma data so we can save it as image
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
-    stack.push(idataTrg);
+
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
-    value++;
+
 }
 
 function loadImage(){
@@ -306,7 +369,8 @@ function loadImage(){
     }
 
     // put back luma data so we can save it as image
-
+     stack=[];
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     ctx.putImageData(idataTrg, 0, 0);
 
     $('#bandmodal').modal('hide');
@@ -361,13 +425,13 @@ function sharpen(){
             dst[dstOff+3] = a + alphaFac*(255-a);
         }
     }
-
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     ctx.putImageData(output, 0, 0);
 }
 function linear_stretch() {
 
     //alert("sdfsdf");
-    var idataSrc = original, // original
+    var idataSrc = ctx.getImageData(0, 0, c.width, c.height), // original
         idataTrg = ctx.createImageData(c.width, c.height),    // empty data
         dataSrc = idataSrc.data,                              // reference the data itself
         dataTrg = idataTrg.data,
@@ -412,11 +476,12 @@ function linear_stretch() {
 
         //console.log(dataTrg[i]+" : ");
     }
-
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     // put back luma data so we can save it as image
     ctx.putImageData(idataTrg, 0, 0);
+
     //demo.src = c.toDataURL();                                 // set demo result's src url
-    original=ctx.getImageData(0, 0, c.width, c.height);
+
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
 }
@@ -465,9 +530,10 @@ function log_stretch() {
     }
 
     // put back luma data so we can save it as image
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
-    original=ctx.getImageData(0, 0, c.width, c.height);
+
     // restore backup data
     //ctx.putImageData(idataSrc, 0, 0);
 }
@@ -509,7 +575,7 @@ function root_stretch() {
         //dataTrg[i] = dataTrg[i+1] = dataTrg[i+2] = luma;
         dataTrg[i+3] = dataSrc[i+3];                            // copy alpha
     }
-
+    stack.push(ctx.getImageData(0, 0, c.width, c.height));
     // put back luma data so we can save it as image
     ctx.putImageData(idataTrg, 0, 0);
     //demo.src = c.toDataURL();                                 // set demo result's src url
