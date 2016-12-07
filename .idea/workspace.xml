@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="d77bcbe3-8cb3-4863-8bda-735ff628c365" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/histogram/css/font-awesome.min.css" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/histogram/edge.html" />
@@ -17,6 +18,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/histogram/index.html" afterPath="$PROJECT_DIR$/histogram/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/histogram/js/process.js" afterPath="$PROJECT_DIR$/histogram/js/process.js" />
     </list>
+=======
+    <list default="true" id="d77bcbe3-8cb3-4863-8bda-735ff628c365" name="Default" comment="" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
     <ignored path="untitled.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,9 +43,22 @@
       <file leaf-file-name="edge.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/histogram/edge.html">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="1360">
               <caret line="80" column="63" selection-start-line="80" selection-start-column="3" selection-end-line="80" selection-end-column="63" />
               <folding />
+=======
+            <state relative-caret-position="405">
+              <caret line="622" column="13" selection-start-line="622" selection-start-column="13" selection-end-line="622" selection-end-column="13" />
+              <folding>
+                <marker date="1479300080346" expanded="true" signature="18768:18792" ph="..." />
+                <marker date="1479300080346" expanded="true" signature="18826:18852" ph="..." />
+                <marker date="1479300080346" expanded="true" signature="18884:18909" ph="..." />
+                <marker date="1479300080346" expanded="true" signature="35465:35489" ph="..." />
+                <marker date="1479300080346" expanded="true" signature="35523:35549" ph="..." />
+                <marker date="1479300080346" expanded="true" signature="35581:35606" ph="..." />
+              </folding>
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
             </state>
           </provider>
         </entry>
@@ -49,8 +66,13 @@
       <file leaf-file-name="canny.min.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/histogram/js/canny.min.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="189">
               <caret line="118" column="24" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="24" />
+=======
+            <state relative-caret-position="255">
+              <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
               <folding />
             </state>
           </provider>
@@ -69,13 +91,19 @@
       <file leaf-file-name="process.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/histogram/js/process.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="534">
               <caret line="514" column="9" selection-start-line="514" selection-start-column="9" selection-end-line="514" selection-end-column="9" />
+=======
+            <state relative-caret-position="335">
+              <caret line="196" column="26" selection-start-line="196" selection-start-column="26" selection-end-line="196" selection-end-column="26" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/histogram/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
@@ -101,6 +129,10 @@
       </file>
       <file leaf-file-name="bootstrap.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/histogram/css/bootstrap.css">
+=======
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1292">
               <caret line="76" column="1" selection-start-line="76" selection-start-column="1" selection-end-line="76" selection-end-column="1" />
@@ -195,9 +227,16 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="-7" />
     <option name="width" value="1378" />
     <option name="height" value="735" />
+=======
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1378" />
+    <option name="height" value="744" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -224,7 +263,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
       <pane id="Scratches" />
+=======
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -278,6 +320,10 @@
           </PATH>
         </subPane>
       </pane>
+<<<<<<< HEAD
+=======
+      <pane id="Scratches" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -410,6 +456,7 @@
       <workItem from="1476439592186" duration="1332000" />
       <workItem from="1476950058470" duration="5009000" />
       <workItem from="1478684335982" duration="4443000" />
+<<<<<<< HEAD
       <workItem from="1478760443887" duration="2310000" />
       <workItem from="1478779498637" duration="3175000" />
       <workItem from="1478787840480" duration="2260000" />
@@ -419,10 +466,16 @@
       <workItem from="1478853028545" duration="5014000" />
       <workItem from="1478936437624" duration="1330000" />
       <workItem from="1480912195774" duration="1706000" />
+=======
+      <workItem from="1478760443887" duration="1055000" />
+      <workItem from="1479022577733" duration="635000" />
+      <workItem from="1479299895314" duration="246000" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="119351000" />
   </component>
   <component name="ToolWindowManager">
@@ -430,6 +483,15 @@
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19603524" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+    <option name="totallyTimeSpent" value="96933000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1378" height="744" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13215859" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -539,12 +601,21 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+<<<<<<< HEAD
             <marker date="1478937651603" expanded="true" signature="20302:20326" ph="..." />
             <marker date="1478937651603" expanded="true" signature="20360:20386" ph="..." />
             <marker date="1478937651603" expanded="true" signature="20418:20443" ph="..." />
             <marker date="1478937651603" expanded="true" signature="36869:36893" ph="..." />
             <marker date="1478937651603" expanded="true" signature="36927:36953" ph="..." />
             <marker date="1478937651603" expanded="true" signature="36985:37010" ph="..." />
+=======
+            <marker date="1479300080346" expanded="true" signature="18768:18792" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="18826:18852" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="18884:18909" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="35465:35489" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="35523:35549" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="35581:35606" ph="..." />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
           </folding>
         </state>
       </provider>
@@ -624,17 +695,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/New folder (5)/pro (2).html">
+    <entry file="file://$PROJECT_DIR$/histogram/js/vendor/jquery-1.12.0.min.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="6018">
           <caret line="354" column="39" selection-start-line="354" selection-start-column="39" selection-end-line="354" selection-end-column="39" />
+=======
+        <state relative-caret-position="510">
+          <caret line="3" column="26434" selection-start-line="3" selection-start-column="26434" selection-end-line="3" selection-end-column="26434" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/histogram/js/vendor/jquery-1.12.0.min.js">
+    <entry file="file://$PROJECT_DIR$/histogram/img/demo_small.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/histogram/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="3" column="26434" selection-start-line="3" selection-start-column="26434" selection-end-line="3" selection-end-column="26434" />
+        <state relative-caret-position="255">
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+          <folding />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/histogram/js/process.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="196" column="26" selection-start-line="196" selection-start-column="26" selection-end-line="196" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -660,14 +750,22 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/js/jquery-1.12.4.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/New folder (5)/pro (2).html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6018">
+          <caret line="354" column="39" selection-start-line="354" selection-start-column="39" selection-end-line="354" selection-end-column="39" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/histogram/img/demo_small.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -688,15 +786,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1292">
           <caret line="76" column="1" selection-start-line="76" selection-start-column="1" selection-end-line="76" selection-end-column="1" />
+=======
+    <entry file="file://$PROJECT_DIR$/js/process.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="78" column="37" selection-start-line="78" selection-start-column="4" selection-end-line="78" selection-end-column="37" />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/histogram/css/main.css">
+    <entry file="file://$PROJECT_DIR$/histogram/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="2108">
           <caret line="124" column="1" selection-start-line="124" selection-start-column="1" selection-end-line="124" selection-end-column="1" />
           <folding />
+=======
+        <state relative-caret-position="17">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
         </state>
       </provider>
     </entry>
@@ -726,6 +838,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/histogram/index.html">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="537">
           <caret line="573" column="19" selection-start-line="573" selection-start-column="19" selection-end-line="573" selection-end-column="19" />
           <folding>
@@ -735,6 +848,17 @@
             <marker date="1478937651603" expanded="true" signature="36869:36893" ph="..." />
             <marker date="1478937651603" expanded="true" signature="36927:36953" ph="..." />
             <marker date="1478937651603" expanded="true" signature="36985:37010" ph="..." />
+=======
+        <state relative-caret-position="405">
+          <caret line="622" column="13" selection-start-line="622" selection-start-column="13" selection-end-line="622" selection-end-column="13" />
+          <folding>
+            <marker date="1479300080346" expanded="true" signature="18768:18792" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="18826:18852" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="18884:18909" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="35465:35489" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="35523:35549" ph="..." />
+            <marker date="1479300080346" expanded="true" signature="35581:35606" ph="..." />
+>>>>>>> b802f60d2bc45b603de215937c79b852e30d8cd6
           </folding>
         </state>
       </provider>
